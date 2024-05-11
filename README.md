@@ -41,3 +41,23 @@ A step-by-step series of examples that tell you how to get a development environ
 
 - `CHECKS_FILE`: The Path to the checks file (default: `data/checks.yml`)
 - `PINGS_FILE`: The Path to the pings file (default: `data/pings.yml`)
+
+## Docker
+
+### Building your own Docker Image
+
+```bash
+docker build -t pingcheck .
+```
+
+### Running the Docker Image
+
+```bash
+docker run -p 1234:1234 -v ./checks.yml:/app/data/checks.yml pingcheck
+```
+
+### Official Docker Image
+
+```bash
+docker run -p 1234:1234 switzerchees/pingcheck
+```
