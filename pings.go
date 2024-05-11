@@ -63,16 +63,15 @@ func FindPingsById(id string, pings []Ping) *Ping {
 
 func LoadPings(path string, checks []Check) ([]Ping, error) {
 	var pings []Ping
-	if _, err := os.Stat(path); os.IsNotExist(err) {
-		return pings, nil
-	}
-	data, err := os.ReadFile(path)
-	if err != nil {
-		return pings, err
-	}
-	err = yaml.Unmarshal(data, &pings)
-	if err != nil {
-		return pings, err
+	if _, err := os.Stat(path); os.IsExist(err) {
+		data, err := os.ReadFile(path)
+		if err != nil {
+			return pings, err
+		}
+		err = yaml.Unmarshal(data, &pings)
+		if err != nil {
+			return pings, err
+		}
 	}
 	var currentPings []Ping
 	for _, p := range pings {
