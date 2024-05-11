@@ -10,7 +10,7 @@ import (
 func main() {
 	app := echo.New()
 
-	checksFile := "checks.yml"
+	checksFile := "data/checks.yml"
 	if os.Getenv("CHECKS_FILE") != "" {
 		checksFile = os.Getenv("CHECKS_FILE")
 	}
@@ -20,7 +20,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	pingsFile := "pings.yml"
+	pingsFile := "data/pings.yml"
 	if os.Getenv("PINGS_FILE") != "" {
 		pingsFile = os.Getenv("PINGS_FILE")
 	}

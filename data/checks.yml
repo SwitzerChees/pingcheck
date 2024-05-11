@@ -1,0 +1,4 @@
+- name: "Test Monitor" # Name of the monitor
+  slug: "test-monitor" # Unique identifier for the monitor
+  token: "test-token" # Unique token for the monitor
+  period: 60 # Period in minutes after which the status goes from "up" to "down"
