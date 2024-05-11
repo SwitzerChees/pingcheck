@@ -1,0 +1,4 @@
+- name: "Test Monitor"
+  slug: "test-monitor"
+  token: "test-token"
+  period: 60
