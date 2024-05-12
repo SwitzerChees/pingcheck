@@ -63,7 +63,7 @@ func FindPingsById(id string, pings []Ping) *Ping {
 
 func LoadPings(path string, checks []Check) ([]Ping, error) {
 	var pings []Ping
-	if _, err := os.Stat(path); os.IsExist(err) {
+	if _, err := os.Stat(path); err == nil {
 		data, err := os.ReadFile(path)
 		if err != nil {
 			return pings, err
