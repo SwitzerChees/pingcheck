@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 	"time"
@@ -25,29 +26,34 @@ type CheckHandler struct {
 func (h *CheckHandler) HandleCheck(c echo.Context) error {
 	slug := c.Param("slug")
 	token := c.Param("token")
+	fmt.Printf("Check: %s \n", token)
+	if slug == "" || token == "" {
+		return c.String(http.StatusBadRequest, "Slug and token are required")
+	}
+
 	check := FindCheckBySlug(slug, h.checks)
 	if check == nil {
-		return c.JSON(http.StatusNotFound, "Check not found")
+		return c.String(http.StatusNotFound, "Check not found")
 	}
 	if check.Token != token {
-		return c.JSON(http.StatusUnauthorized, "Unauthorized")
+		return c.String(http.StatusUnauthorized, "Unauthorized")
 	}
 	ping := FindPingsById(slug, h.pings)
 	if ping == nil {
-		return c.JSON(http.StatusNotFound, "Ping not found")
+		return c.String(http.StatusNotFound, "Ping not found")
 	}
 	if ping.LastPing == nil {
-		return c.JSON(http.StatusInternalServerError, PingStatusDown)
+		return c.String(http.StatusInternalServerError, "No pings yet")
 	}
 	if time.Since(*ping.LastPing) > time.Duration(check.Period)*time.Minute {
 		ping.Status = PingStatusDown
 		SavePings(h.pingsFile, h.pings)
-		return c.JSON(http.StatusInternalServerError, ping.Status)
+		return c.String(http.StatusInternalServerError, string(ping.Status))
 	} else {
 		ping.Status = PingStatusUp
 		SavePings(h.pingsFile, h.pings)
 	}
-	return c.JSON(http.StatusOK, ping.Status)
+	return c.String(http.StatusOK, string(ping.Status))
 }
 
 func FindCheckBySlug(slug string, checks []Check) *Check {

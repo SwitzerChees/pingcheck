@@ -33,23 +33,27 @@ type PingHandler struct {
 func (h *PingHandler) HandlePing(c echo.Context) error {
 	slug := c.Param("slug")
 	token := c.Param("token")
-	fmt.Println(slug, token)
+	fmt.Printf("Ping: %s \n", token)
+	if slug == "" || token == "" {
+		return c.String(http.StatusBadRequest, "Slug and token are required")
+	}
+
 	check := FindCheckBySlug(slug, h.checks)
 	if check == nil {
-		return c.JSON(http.StatusNotFound, "Check not found")
+		return c.String(http.StatusNotFound, "Check not found")
 	}
 	if check.Token != token {
-		return c.JSON(http.StatusUnauthorized, "Unauthorized")
+		return c.String(http.StatusUnauthorized, "Unauthorized")
 	}
 	ping := FindPingsById(slug, h.pings)
 	if ping == nil {
-		return c.JSON(http.StatusNotFound, "Ping not found")
+		return c.String(http.StatusNotFound, "Ping not found")
 	}
 	now := time.Now()
 	ping.LastPing = &now
 	ping.Status = PingStatusUp
 	SavePings(h.pingsFile, h.pings)
-	return c.JSON(http.StatusOK, "Pong")
+	return c.String(http.StatusOK, "Pong")
 }
 
 func FindPingsById(id string, pings []Ping) *Ping {
