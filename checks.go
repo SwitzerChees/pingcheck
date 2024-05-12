@@ -26,7 +26,7 @@ type CheckHandler struct {
 func (h *CheckHandler) HandleCheck(c echo.Context) error {
 	slug := c.Param("slug")
 	token := c.Param("token")
-	fmt.Printf("Check: %s \n", token)
+	fmt.Printf("Check: %s \n", slug)
 	if slug == "" || token == "" {
 		return c.String(http.StatusBadRequest, "Slug and token are required")
 	}

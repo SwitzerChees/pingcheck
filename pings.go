@@ -33,7 +33,7 @@ type PingHandler struct {
 func (h *PingHandler) HandlePing(c echo.Context) error {
 	slug := c.Param("slug")
 	token := c.Param("token")
-	fmt.Printf("Ping: %s \n", token)
+	fmt.Printf("Ping: %s \n", slug)
 	if slug == "" || token == "" {
 		return c.String(http.StatusBadRequest, "Slug and token are required")
 	}
