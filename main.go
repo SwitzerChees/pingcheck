@@ -32,14 +32,16 @@ func main() {
 	SavePings(pingsFile, pings)
 
 	pingHandler := &PingHandler{
-		checks: checks,
-		pings:  pings,
+		checks:    checks,
+		pings:     pings,
+		pingsFile: pingsFile,
 	}
 	app.GET("/ping/:slug/:token", pingHandler.HandlePing)
 
 	checkHandler := &CheckHandler{
-		checks: checks,
-		pings:  pings,
+		checks:    checks,
+		pings:     pings,
+		pingsFile: pingsFile,
 	}
 	app.GET("/check/:slug/:token", checkHandler.HandleCheck)
 
