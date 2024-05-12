@@ -43,6 +43,9 @@ func (h *CheckHandler) HandleCheck(c echo.Context) error {
 		ping.Status = PingStatusDown
 		SavePings(h.pingsFile, h.pings)
 		return c.JSON(http.StatusInternalServerError, ping.Status)
+	} else {
+		ping.Status = PingStatusUp
+		SavePings(h.pingsFile, h.pings)
 	}
 	return c.JSON(http.StatusOK, ping.Status)
 }
