@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -44,6 +46,10 @@ func main() {
 		pingsFile: pingsFile,
 	}
 	app.GET("/check/:slug/:token", checkHandler.HandleCheck)
+
+	app.GET("", func(c echo.Context) error {
+		return c.String(200, fmt.Sprintf("PingCheck Running! %s Checks Active.", strconv.Itoa(len(checks))))
+	})
 
 	app.Logger.Fatal(app.Start(":1234"))
 }
